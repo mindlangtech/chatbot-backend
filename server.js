@@ -6,6 +6,10 @@ import OpenAI from "openai";
 
 dotenv.config();
 
+app.get("/", (req, res) => {
+  res.json({ status: "server alive" });
+});
+
 const app = express();
 app.use(cors({
   origin: "*",
