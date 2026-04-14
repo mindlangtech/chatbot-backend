@@ -6,16 +6,19 @@ import OpenAI from "openai";
 
 dotenv.config();
 
-app.get("/", (req, res) => {
-  res.json({ status: "server alive" });
-});
+const app = express(); // ✅ MUST COME FIRST
 
-const app = express();
 app.use(cors({
   origin: "*",
   methods: ["GET", "POST"]
 }));
+
 app.use(bodyParser.json());
+
+// ✅ Health check route (NOW app exists)
+app.get("/", (req, res) => {
+  res.json({ status: "server alive" });
+});
 
 // OpenAI client
 const client = new OpenAI({
@@ -51,7 +54,6 @@ app.post("/chat", async (req, res) => {
 
     const reply = completion.output_text;
 
-    // 🔐 Log data (for research)
     console.log({
       participant_id,
       condition,
@@ -64,12 +66,11 @@ app.post("/chat", async (req, res) => {
 
   } catch (error) {
     console.error("FULL ERROR:", error);
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 });
 
+// IMPORTANT for Render
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
