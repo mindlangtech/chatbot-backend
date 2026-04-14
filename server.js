@@ -7,7 +7,10 @@ import OpenAI from "openai";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"]
+}));
 app.use(bodyParser.json());
 
 // OpenAI client
