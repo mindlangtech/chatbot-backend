@@ -6,44 +6,26 @@ import OpenAI from "openai";
 
 dotenv.config();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 const app = express();
-=======
-app.get("/", (req, res) => {
-  res.json({ status: "server alive" });
-});
->>>>>>> parent of f3f82c8 (fix)
-=======
-app.get("/", (req, res) => {
-  res.json({ status: "server alive" });
-});
->>>>>>> parent of f3f82c8 (fix)
 
-const app = express();
 app.use(cors({
   origin: "*",
   methods: ["GET", "POST"]
 }));
+
 app.use(bodyParser.json());
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 // Health check route
 app.get("/", (req, res) => {
   res.json({ status: "server alive" });
 });
 
-=======
->>>>>>> parent of f3f82c8 (fix)
-=======
->>>>>>> parent of f3f82c8 (fix)
 // OpenAI client
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// 🎯 Experimental conditions
+// Experimental conditions
 const prompts = {
   supportive: "You are a warm, empathetic tutor who encourages the user.",
   critical: "You are a critical evaluator who challenges the user.",
@@ -55,20 +37,6 @@ app.post("/chat", async (req, res) => {
     const { message, participant_id, condition } = req.body;
 
     const systemPrompt = prompts[condition] || prompts.neutral;
-
-    // Opener logic (BOT STARTS FIRST)
-    if (!message || message.trim() === "") {
-      let opener = "Hello! Thank you for participating. I will ask you a few questions. Let’s begin: What is your opinion on social media?";
-
-      // Optional: vary by condition
-      if (condition === "supportive") {
-        opener = "Hi there! 😊 I'm really glad you're here. Let’s start: What is your opinion on social media?";
-      } else if (condition === "critical") {
-        opener = "Let’s begin. What is your opinion on social media? Please be precise.";
-      }
-
-      return res.json({ reply: opener });
-    }
 
     // Normal OpenAI response
     const completion = await client.responses.create({
@@ -87,7 +55,6 @@ app.post("/chat", async (req, res) => {
 
     const reply = completion.output_text;
 
-    // 🔐 Log data (for research)
     console.log({
       participant_id,
       condition,
@@ -100,12 +67,11 @@ app.post("/chat", async (req, res) => {
 
   } catch (error) {
     console.error("FULL ERROR:", error);
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 });
 
+// IMPORTANT for Render
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
