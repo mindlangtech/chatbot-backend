@@ -7,7 +7,13 @@ import OpenAI from "openai";
 dotenv.config();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const app = express();
+=======
+app.get("/", (req, res) => {
+  res.json({ status: "server alive" });
+});
+>>>>>>> parent of f3f82c8 (fix)
 =======
 app.get("/", (req, res) => {
   res.json({ status: "server alive" });
@@ -22,11 +28,14 @@ app.use(cors({
 app.use(bodyParser.json());
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Health check route
 app.get("/", (req, res) => {
   res.json({ status: "server alive" });
 });
 
+=======
+>>>>>>> parent of f3f82c8 (fix)
 =======
 >>>>>>> parent of f3f82c8 (fix)
 // OpenAI client
