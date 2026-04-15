@@ -6,7 +6,7 @@ import OpenAI from "openai";
 
 dotenv.config();
 
-const app = express(); // ✅ MUST COME FIRST
+const app = express();
 
 app.use(cors({
   origin: "*",
@@ -15,7 +15,7 @@ app.use(cors({
 
 app.use(bodyParser.json());
 
-// ✅ Health check route (NOW app exists)
+// Health check route
 app.get("/", (req, res) => {
   res.json({ status: "server alive" });
 });
@@ -38,6 +38,21 @@ app.post("/chat", async (req, res) => {
 
     const systemPrompt = prompts[condition] || prompts.neutral;
 
+    // Opener logic (BOT STARTS FIRST)
+    if (!message || message.trim() === "") {
+      let opener = "Hello! Thank you for participating. I will ask you a few questions. Let’s begin: What is your opinion on social media?";
+
+      // Optional: vary by condition
+      if (condition === "supportive") {
+        opener = "Hi there! 😊 I'm really glad you're here. Let’s start: What is your opinion on social media?";
+      } else if (condition === "critical") {
+        opener = "Let’s begin. What is your opinion on social media? Please be precise.";
+      }
+
+      return res.json({ reply: opener });
+    }
+
+    // Normal OpenAI response
     const completion = await client.responses.create({
       model: "gpt-4o-mini",
       input: [
