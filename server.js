@@ -29,7 +29,7 @@ const client = new OpenAI({
 const prompts = {
   supportive: "You are a warm, empathetic tutor who encourages the user.",
   critical: "You are a critical evaluator who challenges the user.",
-  neutral: "You are a neutral assistant.",
+  neutral: "Keep your response always less than 10 words. You are a neutral assistant.",
 };
 
 app.post("/chat", async (req, res) => {
@@ -71,7 +71,7 @@ app.post("/chat", async (req, res) => {
   }
 });
 
-// IMPORTANT for Render
+// For Render
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
